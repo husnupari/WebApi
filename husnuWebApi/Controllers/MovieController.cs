@@ -45,12 +45,12 @@ namespace husnuWebApi.Controllers
         }
 
         // POST: api/Movie
-        public List<Movie> Post(Movie movie)
+        public IHttpActionResult Post(Movie movie)
         {
             try
             {
                 movies.Add(movie);
-                return movies;
+                return Ok(movies);
             }
             catch (Exception ex)
             {

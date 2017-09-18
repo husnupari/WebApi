@@ -1,4 +1,5 @@
-﻿using System;
+﻿using husnuWebApi.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -9,31 +10,68 @@ namespace husnuWebApi.Controllers
 {
     public class ProductController : ApiController
     {
-        // GET: api/Product
-        public IEnumerable<string> Get()
+        public static List<Product> products;
+
+        public ProductController()
         {
-            return new string[] { "value1", "value2" };
+            products = new List<Product>();
+            
+            Product product1 = new Product();
+            product1.id = 1;
+            product1.Name = "Apple";
+            product1.category = "Food";
+
+            products.Add(product1);
+
+
+            Product product2 = new Product();
+            product2.id = 2;
+            product2.Name = "Rice";
+            product2.category = "Grocery";
+
+            products.Add(product2);
+        }
+        // GET: api/Product
+        public IEnumerable<Product> Get()
+        { 
+            return products;
+
         }
 
         // GET: api/Product/5
-        public string Get(int id)
+        public Product Get(int id)
         {
-            return "value";
+            return products.Where(x => x.id == id).FirstOrDefault();
         }
 
         // POST: api/Product
-        public void Post([FromBody]string value)
+        public List<Product> Post(Product product)
         {
+            try
+            {
+                products.Add(product);
+                return products;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         // PUT: api/Product/5
-        public void Put(int id, [FromBody]string value)
+        public List<Product> Put(int id, [FromBody]string Name)
         {
+            Product productToBeUpdated=products.Where(x => x.id == id).FirstOrDefault();
+            productToBeUpdated.Name = Name;
+            return products;
         }
 
         // DELETE: api/Product/5
-        public void Delete(int id)
+        public List<Product> Delete(int id)
         {
+            Product productToBeDeleted=products.Where(x => x.id==id).FirstOrDefault();
+            products.Remove(productToBeDeleted);
+            return products;
         }
     }
 }
